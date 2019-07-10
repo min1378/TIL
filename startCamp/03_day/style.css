@@ -1,0 +1,17 @@
+
+    /* 요소선택자(type) */
+    h2 {
+        color: salmon;
+    }
+    /* 요소선택자(id) */
+    #description {
+        background-color:red;
+    }
+        /* 요소선택자(class) */
+    li.list-item {
+        font-size:20px;
+    }
+        /* 요소선택자(ul의 li전체) */
+    ul li {
+        background-color: blueviolet;
+    }
