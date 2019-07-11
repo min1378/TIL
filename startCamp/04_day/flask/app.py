@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request #requests랑 다름 flask 자체 제공 함수 사용자의 요청을 확인할 수 있는 객체
 import requests
-
+import bs4
 app = Flask(__name__)
 
 
@@ -43,6 +43,41 @@ def ascii_result():
     response = requests.get(f'http://artii.herokuapp.com/make?text={text}')
     result = response.text
     return render_template('ascii_result.html', result=result)
+
+
+@app.route('/lotto_input')
+def lotto_input():
+    return render_template('lotto_input.html')
+
+@app.route('/lotto_result')
+def lotto_result():
+    lotto_round = request.args.get('lotto_round')
+    lotto_number = request.args.get('text').split()
+    
+    url=f'https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo={lotto_round}'
+    response = requests.get(url)
+    lotto_info = response.json() # Json Type의 파일을 파이썬 dictionary로 parsing해줘!!!!!!
+    print(lotto_info)
+    for key, val in lotto_info.items():
+        print(key, val)
+    #return render_template('lotto_result.html', result=result)
+    return render_template('lotto_result.html', lotto_my=lotto_info)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__' :     # 파이썬 실행방법에는 두가지... 1. python @@.py 2. 모듈을 호출하는 방법 import시키면 자동 실행 파이썬은 그 자체로 모듈이 된다.   
