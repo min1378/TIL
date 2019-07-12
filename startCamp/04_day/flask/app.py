@@ -57,11 +57,36 @@ def lotto_result():
     url=f'https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo={lotto_round}'
     response = requests.get(url)
     lotto_info = response.json() # Json Type의 파일을 파이썬 dictionary로 parsing해줘!!!!!!
-    print(lotto_info)
-    for key, val in lotto_info.items():
-        print(key, val)
-    #return render_template('lotto_result.html', result=result)
-    return render_template('lotto_result.html', lotto_my=lotto_info)
+    
+    #for key, val in lotto_info.items():
+    winner =[]
+    for i in range(1,7) :
+        winner.append(str(lotto_info[f'drwtNo{i}']))
+    #winner.sort()
+    print(winner)    
+    print(lotto_number)
+
+    #번호 교집합 개수 찾기              
+    if len(lotto_number) == 6:          # 사용자가 보낸 숫자가 6개가 맞는지 확인
+        matched = 0                     #교집합 개수 초기화
+        for number in lotto_number:     #사용자가 보낸 숫자만큼 돌림
+            if number in winner:            #사용자가 보낸 숫자와 1등번호를 비교
+                matched += 1            #교집합 발생시 1씩 증가
+    if matched == 6:
+        result = "1등"
+    elif matched == 5:
+        if str(lotto_info['bnusNo']) in lotto_number:
+            result ="2등"
+        else :
+            result ="3등"
+    elif matched == 4:
+            result = "4등"
+    elif matched == 3:
+            result = "5등"
+    else:
+            result = '꽝'
+    
+    return render_template('lotto_result.html', result=result)
 
 
 
